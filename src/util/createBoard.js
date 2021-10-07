@@ -1,9 +1,7 @@
 const createBoard = (row, col, bombs) => {
     let board = [];
     let mineLocation = [];
-    // Create blank board
   
-    // x = column
     for (let x = 0; x < row; x++) {
       let subCol = [];
       for (let y = 0; y < col; y++) {
@@ -18,7 +16,6 @@ const createBoard = (row, col, bombs) => {
       board.push(subCol);
     }
   
-    // Randomize Bomb Placement
     let bombsCount = 0;
     while (bombsCount < bombs) {
       let x = randomNum(0, row - 1);
@@ -31,19 +28,16 @@ const createBoard = (row, col, bombs) => {
       }
     }
   
-    // Add Numbers
     for (let roww = 0; roww < row; roww++) {
       for (let coll = 0; coll < col; coll++) {
         if (board[roww][coll].value === "X") {
           continue;
         }
   
-        // Top
         if (roww > 0 && board[roww - 1][coll].value === "X") {
           board[roww][coll].value++;
         }
   
-        // Top Right
         if (
           roww > 0 &&
           coll < col - 1 &&
@@ -52,12 +46,10 @@ const createBoard = (row, col, bombs) => {
           board[roww][coll].value++;
         }
   
-        // Right
         if (coll < col - 1 && board[roww][coll + 1].value === "X") {
           board[roww][coll].value++;
         }
   
-        // Botoom Right
         if (
           roww < row - 1 &&
           coll < col - 1 &&
@@ -66,12 +58,10 @@ const createBoard = (row, col, bombs) => {
           board[roww][coll].value++;
         }
   
-        // Bottom
         if (roww < row - 1 && board[roww + 1][coll].value === "X") {
           board[roww][coll].value++;
         }
   
-        // Bottom Left
         if (
           roww < row - 1 &&
           coll > 0 &&
@@ -80,12 +70,10 @@ const createBoard = (row, col, bombs) => {
           board[roww][coll].value++;
         }
   
-        // LEft
         if (coll > 0 && board[roww][coll - 1].value === "X") {
           board[roww][coll].value++;
         }
   
-        // Top Left
         if (roww > 0 && coll > 0 && board[roww - 1][coll - 1].value === "X") {
           board[roww][coll].value++;
         }
@@ -97,6 +85,5 @@ const createBoard = (row, col, bombs) => {
   export default createBoard;
   
   function randomNum(min = 0, max) {
-    // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
