@@ -10,12 +10,17 @@ const Board = ({ flagCounter, setFlagCounter }) => {
   const [mineLocations, setMineLocations] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [msg, setMsg] = useState('');
+  const [flagWin, setFlagWin] = useState(10);
   
   const revealBoard = () => {
     let updatedData = grid;
     updatedData.forEach((datarow) => {
         datarow.forEach((dataitem) => {
+          if (dataitem.flagged && dataitem.value === "X") {
+            return
+          } else {
             dataitem.revealed = true;
+          }
         });
     });
     setGrid(
@@ -35,6 +40,7 @@ const Board = ({ flagCounter, setFlagCounter }) => {
   };
 
   const restartGame = () => {
+    setFlagWin(10);
     freshBoard();
     setFlagCounter(10);
     setGameOver(false);
@@ -45,6 +51,9 @@ const Board = ({ flagCounter, setFlagCounter }) => {
     e.preventDefault();
     let newGrid = JSON.parse(JSON.stringify(grid));
     newGrid[x][y].flagged = !newGrid[x][y].flagged;
+    if (newGrid[x][y].value === "X") {
+      setFlagWin(flagWin - 1);
+    }
     if (newGrid[x][y].flagged && flagCounter >= 1) setFlagCounter(flagCounter - 1)
     else if (!newGrid[x][y].flagged && flagCounter <= 9) setFlagCounter(flagCounter + 1)
     else return
@@ -79,7 +88,17 @@ const Board = ({ flagCounter, setFlagCounter }) => {
 
   };
 
+  useEffect(() => {
+    if (flagWin < 1) {
+      setGameOver(true);
+      setMsg('Congrats! You Won!');
+      revealBoard();
+    }
+  }, [flagWin])
+
   console.log(nonMineCount)
+  console.log(flagWin);
+
 
 
   return (
